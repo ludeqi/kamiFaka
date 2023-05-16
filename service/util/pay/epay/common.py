@@ -40,12 +40,12 @@ class Epay(object):
         try:
             req = requests.post(self.API + 'submit.php', data=data)
             # print(req.text)
-            content = re.search(r"<script>(.*)</script>", req.text).group(1)
+            pay_url = re.search(r"url=(.*)\" width", req.text).group(1)
             # print(content)
-            if 'http' in content:
-                pay_url = re.search(r"href=\'(.*)\'", content).group(1)
-            else:
-                pay_url = self.API + re.search(r"\.?\/(.*)\'", content).group(1)
+            #if 'http' in content:
+            #    pay_url = re.search(r"href=\'(.*)\'", content).group(1)
+            # else:
+            #   pay_url = self.API + re.search(r"\.?\/(.*)\'", content).group(1)
             return {'qr_code':pay_url,'redirect':1} # 第三方状态1；本地2
         except Exception as e:
             print('submit | 易支付API请求失败')
